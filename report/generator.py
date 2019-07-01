@@ -107,7 +107,8 @@ class ReportGenerator(object):
       workspace_name=None,
       testlogs_dir=None,
       go_importmap=None,
-      source_file_patterns=None):
+      source_file_patterns=None,
+      import_prefix=None):
     """Creates a coverage report generator.
 
     Args:
@@ -151,8 +152,11 @@ class ReportGenerator(object):
           os.path.join(self.project_dir, "bazel-testlogs"))
 
     if not self.go_importmap:
-      self.go_importmap = _get_go_importmap(self.project_dir,
-                                            self.workspace_name)
+      if not import_prefix:
+          self.go_importmap = _get_go_importmap(self.project_dir,
+                                                self.workspace_name)
+      else:
+          self.go_importmap = {import_prefix: self.workspace_name}
 
     if not self.source_file_patterns:
       self.source_file_patterns = _DEFAULT_SOURCE_FILE_PATTERNS
