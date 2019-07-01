@@ -30,6 +30,7 @@ def main(argv=None):
       description='Bazel Coverage Report Generator')
   parser.add_argument("--dest_dir", type=str, default="/tmp/cov_report")
   parser.add_argument("--project_dir", type=str, default=os.getcwd())
+  parser.add_argument("--go_import_prefix", type=str, default=None)
 
   args = parser.parse_args()
 
@@ -40,7 +41,7 @@ def main(argv=None):
   # TODO: deal gracefully with exceptions
 
   gen = generator.ReportGenerator(
-      dest_dir=args.dest_dir, project_dir=args.project_dir)
+      dest_dir=args.dest_dir, project_dir=args.project_dir, import_prefix=args.go_import_prefix)
   gen.copy_sources()
   gen.copy_cov()
   gen.genhtml()
